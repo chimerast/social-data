@@ -18,6 +18,7 @@ import com.mongodb.util.JSON
 object SpeedaGeoCoder extends App {
   val db = Database.forURL("jdbc:mysql://localhost/speeda", driver = "com.mysql.jdbc.Driver", user = "root")
   val geocoding = MongoConnection("localhost")("speeda")("geocoding")
+
   val geocoder = new Geocoder()
   val gson = new GsonBuilder().setFieldNamingPolicy(FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES).create()
 
@@ -28,26 +29,26 @@ object SpeedaGeoCoder extends App {
       if geocoding.findOne(MongoDBObject("company_id" -> companyId)).isEmpty;
       address <- address
     ) {
-      val request = new GeocoderRequestBuilder()
-        .setAddress(address)
-        .setLanguage("en")
-        .getGeocoderRequest()
+      val request = new GeocoderRequestBuilder().setAddress(address).setLanguage("en").getGeocoderRequest()
       val response = geocoder.geocode(request)
 
       println(companyId)
 
       if (response.getStatus() == GeocoderStatus.OK) {
+        // 住所を解決できた場合はJSONを丸ごとresultとして入れる
         val results = response.getResults()
         geocoding.save(
           MongoDBObject("company_id" -> companyId, "result" -> JSON.parse(gson.toJson(results.get(0)))))
       } else if (response.getStatus() == GeocoderStatus.ZERO_RESULTS) {
+        // 住所を解決できなかった場合はcompany_idだけを入れる
         geocoding.save(
           MongoDBObject("company_id" -> companyId))
       } else {
         throw new Exception(response.getStatus().toString())
       }
 
-      Thread.sleep(500)
+      // Googleの制限を回避するためにwaitをいれる
+      Thread.sleep(200)
     }
   }
 }
