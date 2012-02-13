@@ -1,0 +1,115 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.karatachi.scala</groupId>
+  <artifactId>social-data</artifactId>
+  <version>0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <properties>
+    <maven.compiler.source>1.6</maven.compiler.source>
+    <maven.compiler.target>1.6</maven.compiler.target>
+    <encoding>UTF-8</encoding>
+    <scala.version>2.9.1</scala.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.scala-lang</groupId>
+      <artifactId>scala-library</artifactId>
+      <version>${scala.version}</version>
+    </dependency>
+
+    <!-- Google Geocoding API -->
+    <dependency>
+      <groupId>com.google.code.geocoder-java</groupId>
+      <artifactId>geocoder-java</artifactId>
+      <version>0.9</version>
+    </dependency>
+
+    <!-- 形態素解析器 -->
+    <dependency>
+      <groupId>jp.sourceforge.igo</groupId>
+      <artifactId>igo</artifactId>
+      <version>0.4.3</version>
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-math</artifactId>
+      <version>2.2</version>
+    </dependency>
+
+    <!-- DBアクセス -->
+    <dependency>
+      <groupId>org.scalaquery</groupId>
+      <artifactId>scalaquery_2.9.0-1</artifactId>
+      <version>0.9.5</version>
+    </dependency>
+    <dependency>
+      <groupId>mysql</groupId>
+      <artifactId>mysql-connector-java</artifactId>
+      <version>5.1.18</version>
+    </dependency>
+    <dependency>
+      <groupId>com.mongodb.casbah</groupId>
+      <artifactId>casbah-core_2.9.1</artifactId>
+      <version>2.1.5-1</version>
+    </dependency>
+
+    <!-- JodaTime -->
+    <dependency>
+      <groupId>joda-time</groupId>
+      <artifactId>joda-time</artifactId>
+      <version>2.0</version>
+    </dependency>
+    <dependency>
+      <groupId>org.joda</groupId>
+      <artifactId>joda-convert</artifactId>
+      <version>1.1</version>
+    </dependency>
+
+    <!-- ロギング無効化 -->
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.6.4</version>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.scala-tools</groupId>
+        <artifactId>maven-scala-plugin</artifactId>
+        <version>2.15.2</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>compile</goal>
+              <goal>testCompile</goal>
+            </goals>
+            <phase>compile</phase>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+
+  <repositories>
+    <repository>
+      <id>ScalaToolsReleaseRepository</id>
+      <name>Scala Tools Release Repository</name>
+      <url>http://scala-tools.org/repo-releases/</url>
+    </repository>
+    <repository>
+      <id>karatachi.org</id>
+      <name>Karatachi Maven2 Repository</name>
+      <url>http://repo.karatachi.org/mvn</url>
+    </repository>
+  </repositories>
+
+  <name>Mining the Social Web</name>
+  <description />
+</project>
