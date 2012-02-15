@@ -4,6 +4,7 @@ import scala.collection.mutable.ArrayBuffer
 import scala.collection.mutable.Map
 import scala.collection.mutable.Set
 import scala.math._
+import edu.uci.ics.jung.graph.Graph
 
 object Distance {
   type T = Array[Double]
@@ -85,14 +86,25 @@ object HierarchialClustering {
     clusters(0)
   }
 
-  def print(n: Tree, f: (Int) => String): Unit =
-    print(n, 0, f)
+  def graph(t: Tree, g: Graph[Tree, String]): Unit = {
+    t match {
+      case n: Node =>
+        g.addEdge(n.id + "_" + n.left.id, n, n.left)
+        g.addEdge(n.id + "_" + n.right.id, n, n.right)
+        graph(n.left, g)
+        graph(n.right, g)
+      case _ =>
+    }
+  }
 
-  private def print(n: Tree, i: Int, f: (Int) => String): Unit = {
-    n match {
-      case c: Node =>
-        print(c.left, i + 1, f)
-        print(c.right, i + 1, f)
+  def print(t: Tree, f: (Int) => String): Unit =
+    print(t, 0, f)
+
+  private def print(t: Tree, i: Int, f: (Int) => String): Unit = {
+    t match {
+      case n: Node =>
+        print(n.left, i + 1, f)
+        print(n.right, i + 1, f)
       case l: Leaf =>
         println((" " * i) + f(l.id))
     }
