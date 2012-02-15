@@ -30,3 +30,5 @@ CREATE TABLE share (
   market_capitalization DOUBLE,
   PRIMARY KEY(company_id, date)
 );
+
+CREATE INDEX company_country_id_idx ON company(country_id);

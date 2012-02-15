@@ -53,7 +53,7 @@ object HierarchialClustering {
     var nodeId = -1
 
     // クラスタは最初は行たち
-    val clusters = ArrayBuffer[Tree](rows.zipWithIndex.map { case (row, i) => Leaf(i + 1, row) }: _*)
+    val clusters = ArrayBuffer[Tree](rows.zipWithIndex.map { case (row, i) => Leaf(i, row) }: _*)
 
     case class Selected(ci: Tree, cj: Tree, i: Int, j: Int, d: Double)
 
@@ -82,7 +82,20 @@ object HierarchialClustering {
       clusters.append(newcluster)
     }
 
-    clusters.toList(0)
+    clusters(0)
+  }
+
+  def print(n: Tree, f: (Int) => String): Unit =
+    print(n, 0, f)
+
+  private def print(n: Tree, i: Int, f: (Int) => String): Unit = {
+    n match {
+      case c: Node =>
+        print(c.left, i + 1, f)
+        print(c.right, i + 1, f)
+      case l: Leaf =>
+        println((" " * i) + f(l.id))
+    }
   }
 }
 
@@ -90,7 +103,7 @@ object KMeansClustering {
   type T = Array[Double]
   type Distance = (T, T) => Double
 
-  def kcluster(rows: Array[T], distance: Distance, k: Int, n: Int = 100): Array[Array[Int]] = {
+  def clustering(rows: Array[T], distance: Distance, k: Int, n: Int = 100): Array[Array[Int]] = {
     val centers = 0 until k
     val indices = rows(0).indices
 
