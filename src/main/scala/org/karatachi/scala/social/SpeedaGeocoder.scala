@@ -1,18 +1,16 @@
 package org.karatachi.scala.social
 
-import org.scalaquery.session._
-import org.scalaquery.session.Database.threadLocalSession
-import org.scalaquery.ql._
 import org.scalaquery.ql.TypeMapper._
-import org.scalaquery.ql.extended.{ ExtendedTable => Table }
 import org.scalaquery.ql.extended.MySQLDriver.Implicit._
-import com.mongodb.casbah.MongoConnection
-import com.mongodb.casbah.commons.MongoDBObject
+import org.scalaquery.ql.extended.{ExtendedTable => Table}
+import org.scalaquery.session.Database.threadLocalSession
+
+import com.google.code.geocoder.model.GeocoderStatus
 import com.google.code.geocoder.Geocoder
 import com.google.code.geocoder.GeocoderRequestBuilder
-import com.google.code.geocoder.model.GeocoderStatus
-import com.google.gson.GsonBuilder
 import com.google.gson.FieldNamingPolicy
+import com.google.gson.GsonBuilder
+import com.mongodb.casbah.commons.MongoDBObject
 import com.mongodb.util.JSON
 
 object SpeedaGeoCoder extends App {

@@ -1,20 +1,14 @@
 package org.karatachi.scala.social
 
-import java.awt.Dimension
 import java.sql.Date
 
 import scala.Array.canBuildFrom
 
 import org.apache.commons.collections15.Transformer
 import org.joda.time.LocalDate
-import org.scalaquery.ql.TypeMapper.DateTypeMapper
-import org.scalaquery.ql.TypeMapper.DoubleTypeMapper
-import org.scalaquery.ql.TypeMapper.StringTypeMapper
-import org.scalaquery.ql.extended.MySQLDriver.Implicit.baseColumnToColumnOps
-import org.scalaquery.ql.extended.MySQLDriver.Implicit.queryToQueryInvoker
-import org.scalaquery.ql.extended.MySQLDriver.Implicit.tableToQuery
-import org.scalaquery.ql.extended.MySQLDriver.Implicit.valueToConstColumn
-import org.scalaquery.ql.extended.{ExtendedTable => Table}
+import org.scalaquery.ql.TypeMapper._
+import org.scalaquery.ql.extended.MySQLDriver.Implicit._
+import org.scalaquery.ql.extended.{ ExtendedTable => Table }
 import org.scalaquery.ql.Query
 import org.scalaquery.session.Database.threadLocalSession
 

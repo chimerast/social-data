@@ -32,3 +32,11 @@ CREATE TABLE share (
 );
 
 CREATE INDEX company_country_id_idx ON company(country_id);
+
+CREATE TABLE finance (
+  company_id CHAR(12) NOT NULL,
+  year INTEGER NOT NULL,
+  title INTEGER NOT NULL,
+  value DOUBLE,
+  PRIMARY KEY(company_id, year, title)
+);
