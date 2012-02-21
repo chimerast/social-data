@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script type="text/javascript" src="http://mbostock.github.com/d3/d3.js"></script>
+<style type="text/css">
+.node circle {
+  fill: #fff;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+.node {
+  font: 10px sans-serif;
+}
+
+.link {
+  fill: none;
+  stroke: #ccc;
+  stroke-width: 1.5px;
+}
+</style>
+</head>
+<body>
+  <div id="chart"></div>
+  <script type="text/javascript">
+var json = %s;
+
+var w = 960, h = 3000;
+
+var cluster = d3.layout.cluster()
+  .size([h, w - 160]);
+
+var diagonal = d3.svg.diagonal()
+  .projection(function(d) { return [d.y, d.x]; });
+
+var vis = d3.select("#chart").append("svg")
+  .attr("width", w)
+  .attr("height", h)
+  .append("g")
+  .attr("transform", "translate(40, 0)");
+
+var nodes = cluster.nodes(json);
+
+var link = vis.selectAll("path.link")
+  .data(cluster.links(nodes))
+  .enter().append("path")
+  .attr("class", "link")
+  .attr("d", diagonal);
+
+var node = vis.selectAll("g.node")
+  .data(nodes)
+  .enter().append("g")
+  .attr("class", "node")
+  .attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; })
+
+node.append("circle")
+  .attr("r", 4.5);
+
+node.append("text")
+  .attr("dx", function(d) { return d.children ? -8 : 8; })
+  .attr("dy", 3)
+  .attr("text-anchor", function(d) { return d.children ? "end" : "start"; })
+  .text(function(d) { return d.name; });
+</script>
+</body>
+</html>

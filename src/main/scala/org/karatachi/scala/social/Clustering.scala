@@ -1,10 +1,13 @@
 package org.karatachi.scala.social
 
 import scala.collection.mutable.ArrayBuffer
+import scala.collection.immutable.{ Map => IMap }
 import scala.collection.mutable.Map
 import scala.collection.mutable.Set
 import scala.math._
 import edu.uci.ics.jung.graph.Graph
+import scala.util.parsing.json.JSONObject
+import scala.util.parsing.json.JSONArray
 
 object Distance {
   type T = Array[Double]
@@ -112,6 +115,16 @@ object HierarchialClustering {
         print(n.right, i + 1, f)
       case l: Leaf =>
         println((" " * i) + f(l.id))
+    }
+  }
+
+  def json(t: Tree, f: (Int) => String): JSONObject = {
+    t match {
+      case n: Node =>
+        val children = new JSONArray(List(json(n.left, f), json(n.right, f)))
+        new JSONObject(IMap("children" -> children))
+      case l: Leaf =>
+        new JSONObject(IMap("name" -> f(l.id)))
     }
   }
 }

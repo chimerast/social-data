@@ -1,20 +1,16 @@
 package org.karatachi.scala.social
 
-import java.awt.Dimension
+import java.io.BufferedWriter
+import java.io.File
+import java.io.FileWriter
 
 import scala.Array.canBuildFrom
+import scala.io.Source
 
-import org.apache.commons.collections15.Transformer
 import org.karatachi.scala.social.DataSource.Finance
 import org.scalaquery.ql.TypeMapper._
 import org.scalaquery.ql.extended.MySQLDriver.Implicit._
 import org.scalaquery.session.Database.threadLocalSession
-
-import edu.uci.ics.jung.algorithms.layout.KKLayout
-import edu.uci.ics.jung.graph.DelegateTree
-import edu.uci.ics.jung.visualization.renderers.Renderer
-import edu.uci.ics.jung.visualization.BasicVisualizationServer
-import javax.swing.JFrame
 
 object AssetsClustering extends App {
 
@@ -35,32 +31,15 @@ object AssetsClustering extends App {
 
     val tree = HierarchialClustering.clustering(assets, Distance.pearson)
 
-    val g = new DelegateTree[HierarchialClustering.Tree, String]()
-    g.addVertex(tree);
-    HierarchialClustering.graph(tree, g)
+    val json = HierarchialClustering.json(tree, companies(_)._4)
 
-    val transformer = new Transformer[HierarchialClustering.Tree, String]() {
-      override def transform(i: HierarchialClustering.Tree): String = {
-        if (i.id >= 0) {
-          companies(i.id)._4
-        } else {
-          ""
-        }
-      }
-    }
+    val html = Source.fromInputStream(getClass.getResourceAsStream("tree.html")).getLines.mkString("\n")
 
-    val layout = new KKLayout[HierarchialClustering.Tree, String](g);
-    //val layout = new SpringLayout(g)
-    layout.setSize(new Dimension(600, 600))
+    val file = File.createTempFile("tree", ".html")
+    val out = new BufferedWriter(new FileWriter(file))
+    out.write(html.format(json))
+    out.close()
 
-    val panel = new BasicVisualizationServer[HierarchialClustering.Tree, String](layout, layout.getSize())
-    panel.getRenderContext().setVertexLabelTransformer(transformer)
-    panel.getRenderer().getVertexLabelRenderer().setPosition(Renderer.VertexLabel.Position.CNTR)
-
-    val frame = new JFrame()
-    frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE)
-    frame.getContentPane().add(panel)
-    frame.pack()
-    frame.setVisible(true)
+    Runtime.getRuntime().exec("open " + file.getAbsolutePath())
   }
 }
