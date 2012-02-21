@@ -9,8 +9,13 @@ import edu.uci.ics.jung.graph.Graph
 object Distance {
   type T = Array[Double]
 
-  def pearson(v1: T, v2: T): Double = {
-    val n = v1.size
+  def pearson(a1: T, a2: T): Double = {
+    val v = a1 zip a2 filter (e => !e._1.isNaN && !e._2.isNaN)
+
+    val v1 = v.map(_._1)
+    val v2 = v.map(_._2)
+
+    val n = v.size
 
     // 単純な合計
     val sum1 = v1.sum

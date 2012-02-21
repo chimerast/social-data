@@ -10,9 +10,7 @@ import org.scalaquery.session.Database.threadLocalSession
 
 object FinanceLoader extends App {
 
-  val accounts = List(110004000, 210000100, 210000900, 210002500, 510300100, 510300800)
-
-  accounts.foreach(load)
+  Account.accounts.map(_.id).foreach(load)
 
   def load(title: Int): Unit = {
     val path = "/Users/chimera/Downloads/speeda/%09d.csv".format(title)
