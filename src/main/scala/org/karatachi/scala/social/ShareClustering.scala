@@ -20,7 +20,7 @@ object ShareClustering extends App {
   val end = toSql(new LocalDate(2011, 12, 1).minusDays(1))
 
   DataSource.db withSession {
-    val companies = DataSource.nikkei225
+    val companies = DataSource.japan
 
     val title = Account.totalassets.id
 

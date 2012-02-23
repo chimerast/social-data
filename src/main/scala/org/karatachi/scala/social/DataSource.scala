@@ -5,7 +5,7 @@ import java.sql.Date
 import org.joda.time.LocalDate
 import org.scalaquery.ql.TypeMapper._
 import org.scalaquery.ql.extended.MySQLDriver.Implicit._
-import org.scalaquery.ql.extended.{ExtendedTable => Table}
+import org.scalaquery.ql.extended.{ ExtendedTable => Table }
 import org.scalaquery.session._
 
 import com.mongodb.casbah.MongoConnection
@@ -13,6 +13,16 @@ import com.mongodb.casbah.MongoConnection
 object DataSource {
   val db = Database.forURL("jdbc:mysql://localhost/speeda", driver = "com.mysql.jdbc.Driver", user = "root")
   val geocoding = MongoConnection("localhost")("speeda")("geocoding")
+
+  def global()(implicit session: Session) = {
+    val q = for (c <- Company) yield c.*
+    q.list.toArray
+  }
+
+  def japan()(implicit session: Session) = {
+    val q = for (c <- Company if c.countryId === "JPN") yield c.*
+    q.list.toArray
+  }
 
   def nikkei225()(implicit session: Session) = {
     val q = for (c <- Company if c.countryId === "JPN") yield c.*

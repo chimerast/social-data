@@ -57,12 +57,18 @@
       <artifactId>jung-3d</artifactId>
       <version>2.0.1</version>
     </dependency>
-    
+
     <!-- Google Geocoding API -->
     <dependency>
       <groupId>com.google.code.geocoder-java</groupId>
       <artifactId>geocoder-java</artifactId>
       <version>0.9</version>
+    </dependency>
+    
+    <dependency>
+      <groupId>de.micromata.jak</groupId>
+      <artifactId>JavaAPIforKml</artifactId>
+      <version>2.2.0</version>
     </dependency>
 
     <!-- 形態素解析器 -->

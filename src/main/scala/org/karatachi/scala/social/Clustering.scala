@@ -12,6 +12,18 @@ import scala.util.parsing.json.JSONArray
 object Distance {
   type T = Array[Double]
 
+  def euclidean(a1: T, a2: T): Double = {
+    val v = a1 zip a2 filter (e => !e._1.isNaN && !e._2.isNaN)
+
+    val v1 = v.map(_._1)
+    val v2 = v.map(_._2)
+
+    // 差の２乗の合計
+    val pSum = (v1 zip v2).map { case (i1, i2) => pow(i1 - i2, 2) }.sum
+
+    sqrt(pSum)
+  }
+
   def pearson(a1: T, a2: T): Double = {
     val v = a1 zip a2 filter (e => !e._1.isNaN && !e._2.isNaN)
 
@@ -29,7 +41,7 @@ object Distance {
     val sum2Sq = v2.map(pow(_, 2)).sum
 
     // 積の合計
-    val pSum = v1.zip(v2).map { case (i1, i2) => i1 * i2 }.sum
+    val pSum = (v1 zip v2).map { case (i1, i2) => i1 * i2 }.sum
 
     // ピアソンによるスコアを算出
     val num = pSum - (sum1 * sum2 / n)
@@ -142,7 +154,7 @@ object KMeansClustering {
   type T = Array[Double]
   type Distance = (T, T) => Double
 
-  def clustering(rows: Array[T], distance: Distance, k: Int, n: Int = 100): Array[Array[Int]] = {
+  def clustering(rows: Array[T], distance: Distance, k: Int, n: Int = 100): Array[(Array[Int], T)] = {
     val centers = 0 until k
     val indices = rows(0).indices
 
@@ -166,7 +178,7 @@ object KMeansClustering {
 
       // 結果が前回と同じであれば終了
       if (bestmatches.sameElements(lastmatches))
-        return lastmatches.map(_.toArray)
+        return (lastmatches zip clusters).map(t => (t._1.toArray, t._2))
 
       // 重心をそのメンバーの平均に移動する
       centers.foreach { i =>
@@ -178,6 +190,6 @@ object KMeansClustering {
       lastmatches = bestmatches
     }
 
-    lastmatches.map(_.toArray)
+    (lastmatches zip clusters).map(t => (t._1.toArray, t._2))
   }
 }
