@@ -31,15 +31,6 @@ object AssetsClustering extends App {
 
     val tree = HierarchialClustering.clustering(assets, Distance.pearson)
 
-    val json = HierarchialClustering.json(tree, companies(_)._4)
-
-    val html = Source.fromInputStream(getClass.getResourceAsStream("tree.html")).getLines.mkString("\n")
-
-    val file = File.createTempFile("tree", ".html")
-    val out = new BufferedWriter(new FileWriter(file))
-    out.write(html.format(json))
-    out.close()
-
-    Runtime.getRuntime().exec("open " + file.getAbsolutePath())
+    Dendrogram(tree, companies.map(_._4))
   }
 }

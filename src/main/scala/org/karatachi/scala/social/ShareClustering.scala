@@ -42,9 +42,11 @@ object ShareClustering extends App {
 
     val tree = HierarchialClustering.clustering(shares, Distance.pearson)
 
-    val json = HierarchialClustering.json(tree, companies(_)._4)
+    Dendrogram(tree, companies.map(_._4))
 
-    val html = Source.fromInputStream(getClass.getResourceAsStream("dendrogram.html")).getLines.mkString("\n")
+    val json = HierarchialClustering.json2(tree, companies(_)._4)
+
+    val html = Source.fromInputStream(getClass.getResourceAsStream("dendrogram2.html")).getLines.mkString("\n")
 
     val file = File.createTempFile("tree", ".html")
     val out = new BufferedWriter(new FileWriter(file))

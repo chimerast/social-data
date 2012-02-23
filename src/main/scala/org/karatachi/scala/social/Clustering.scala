@@ -127,6 +127,15 @@ object HierarchialClustering {
         new JSONObject(IMap("name" -> f(l.id)))
     }
   }
+  def json2(t: Tree, f: (Int) => String): JSONObject = {
+    t match {
+      case n: Node =>
+        val children = new JSONArray(List(json2(n.left, f), json2(n.right, f)))
+        new JSONObject(IMap("" -> children))
+      case l: Leaf =>
+        new JSONObject(IMap(f(l.id) -> l.id))
+    }
+  }
 }
 
 object KMeansClustering {
