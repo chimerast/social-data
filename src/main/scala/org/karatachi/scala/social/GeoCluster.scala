@@ -85,6 +85,6 @@ object GeoCluster extends App {
       }
     }
 
-    kml.marshal(new File("/Users/chimera/companies.kml"))
+    kml.marshal(new File("/Users/chimera/global.kml"))
   }
 }

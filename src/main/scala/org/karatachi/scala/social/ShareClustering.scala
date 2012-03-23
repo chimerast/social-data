@@ -17,10 +17,10 @@ import org.scalaquery.session.Database.threadLocalSession
 
 object ShareClustering extends App {
   val start = toSql(new LocalDate(2011, 1, 1))
-  val end = toSql(new LocalDate(2011, 12, 1).minusDays(1))
+  val end = toSql(new LocalDate(2012, 1, 1).minusDays(1))
 
   DataSource.db withSession {
-    val companies = DataSource.japan
+    val companies = DataSource.nikkei225
 
     val title = Account.totalassets.id
 
@@ -44,15 +44,29 @@ object ShareClustering extends App {
 
     Dendrogram(tree, companies.map(_._4))
 
-    val json = HierarchialClustering.json2(tree, companies(_)._4)
+    {
+      val json = HierarchialClustering.json(tree, companies(_)._4)
 
-    val html = Source.fromInputStream(getClass.getResourceAsStream("dendrogram2.html")).getLines.mkString("\n")
+      val html = Source.fromInputStream(getClass.getResourceAsStream("dendrogram.html")).getLines.mkString("\n")
 
-    val file = File.createTempFile("tree", ".html")
-    val out = new BufferedWriter(new FileWriter(file))
-    out.write(html.format(json))
-    out.close()
+      val file = File.createTempFile("tree", ".html")
+      val out = new BufferedWriter(new FileWriter(file))
+      out.write(html.format(json))
+      out.close()
 
-    Runtime.getRuntime().exec("open " + file.getAbsolutePath())
+      Runtime.getRuntime().exec("open " + file.getAbsolutePath())
+    }
+    {
+      val json = HierarchialClustering.json2(tree, companies(_)._4)
+
+      val html = Source.fromInputStream(getClass.getResourceAsStream("dendrogram2.html")).getLines.mkString("\n")
+
+      val file = File.createTempFile("tree", ".html")
+      val out = new BufferedWriter(new FileWriter(file))
+      out.write(html.format(json))
+      out.close()
+
+      Runtime.getRuntime().exec("open " + file.getAbsolutePath())
+    }
   }
 }
